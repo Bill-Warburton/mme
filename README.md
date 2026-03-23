@@ -30,7 +30,7 @@ Stata/Python code for calculating milligrams of morphine equivalent (MME) from B
 
 ## Background
 
-Morphine milligram equivalents (MME) provide a standardised way to compare the potency of different opioid prescriptions.  This project calculates MME for all opioid prescriptions dispensed in British Columbia and recorded in the PharmaNet administrative database, covering the period 2000–2022.
+Morphine milligram equivalents (MME) provide a standardised way to compare the potency of different opioid prescriptions.  This project calculates MME for all opioid prescriptions dispensed in British Columbia and recorded in the PharmaNet administrative database.
 
 The main entry point is `mme_master.do`.  Running it executes the complete pipeline and produces aggregate MME statistics by year.
 
@@ -64,7 +64,8 @@ mme/
 | **PharmaNet parquet files** | Dispensing records for all BC prescriptions | Available inside the SRE at `R:\DATA\<date>\Ministry_of_Health\PharmaNet\parquet\PharmaNet` |
 | **DIP drug list (hlth_prod)** | List of all drugs with a PharmaNet record | Available inside the SRE at `R:\DATA\<date>\Ministry_of_Health\PharmaNet\csv\pharmanet-hlth-prod_*.csv` |
 | **Health Canada Drug Product Database (DPD)** | Drug ingredients, strengths, forms, routes, ATC codes | Downloaded externally using `prepare_hc_drug_files.py`; imported via OCWA |
-| **MoH MME conversion factors** | Factors used by BC Ministry of Health | Encoded in `mme.csv` |
+| **MoH MME conversion factors by din_pin** | OME conversion factors provided by BC Ministry of Health in Appendix 1 of the June 2025 edition of BC Prescription Drug Atlas
+Opioids and Benzodiazepine Receptor Agonists available at https://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/drug-data/bc_prescription_drug_atlas_2025_-_opioids_and_bzras.pdf
 
 ### Note on drugs not in the Health Canada DPD
 
@@ -449,16 +450,10 @@ The following enhancements are recommended for future versions:
 
 ---
 
-## Researchers who have used PharmaNet data
-
-- **Steve Morgan**, School of Population and Public Health, UBC. https://spph.ubc.ca/faculty/professors/steve-morgan/
-- **Colin Dormuth**, University of British Columbia. https://pubmed.ncbi.nlm.nih.gov/?term=Dormuth+CR&cauthor_id=36356988
-
----
-
 ## License
 
-Copyright 2024 Province of British Columbia
+Copyright 2026 Bill Warburton
+
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
