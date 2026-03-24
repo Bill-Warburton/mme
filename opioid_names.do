@@ -244,19 +244,17 @@ replace strength_unit = drug_strength_unit if !missing(drug_strength_unit)
    (identified by inspecting implausible per-prescription MME values)
    ----------------------------------------------------------------------- */
 
-/* DIN 51330 — oral morphine solution: unit recorded as non-standard */
-replace dosage_unit   = "ML" if din_pin == 51330
-replace strength_unit = "MG" if din_pin == 51330
-replace strength      = .05  if din_pin == 51330
+replace strength = strength/1000 if dosage_unit   == "L" & strength_unit == "MG"
+replace dosage_unit = "ML"  if dosage_unit   == "L" & strength_unit == "MG"
 
-/* DIN 179930 — hydromorphone solution */
-replace dosage_unit   = "ML" if din_pin == 179930
-replace strength_unit = "MG" if din_pin == 179930
-replace strength      = 2    if din_pin == 179930
+gen temp_code  = dosage_unit   == "L" & strength_unit == "G"
+replace dosage_unit = "ML"  if temp_code
+replace strength_unit = "ML"  if temp_code
+drop temp_code
 
-/* DIN 50830 — morphine injectable */
-replace dosage_unit   = "ML" if din_pin == 50830
-replace strength_unit = "MG" if din_pin == 50830
+replace dosage_unit   = "ML" if strength_unit == "%"
+replace strength_unit = "MG" if strength_unit == "%"
+
 
 /* DIN 95680 — opium tincture: strength unit missing */
 replace strength_unit = "MG" if din_pin == 95680
