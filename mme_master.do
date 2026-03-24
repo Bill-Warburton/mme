@@ -11,6 +11,13 @@ global data_dir = "R:\working\Bill\ppp\data"
 global hc_dir = "R:\working\Bill\ppp\hc"
 global data_version = "R:\DATA\2026-03-05"
 
+/* Atlas option
+   restrict_to_atlas – set to 1 to keep only din_pins that appear in the
+                       Atlas file; drops all other opioids from the pipeline.
+                       When 0 (default), strip_opioids.do produces all four
+                       MME variants: mme_mm, mme_am, mme_ma, mme_aa.        */
+global restrict_to_atlas 0
+
 cd  "$dir"
 
 /***********************************************************

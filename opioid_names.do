@@ -234,6 +234,17 @@ gen vial = (strpos(drug_brand_nm, "VIAL") > 0) | (dosage_unit == "VIAL")
 drop _merge
 merge m:1 din_pin using "$dir\moh_opioid_list.dta"
 drop if _merge == 2   // drop MoH-only records (not in our opioid set)
+
+/* Tag Atlas-matched records for use in the four-variant MME calculation
+   in strip_opioids.do, and for the restrict_to_atlas option below.         */
+gen _atlas_match = (_merge == 3)
+
+/* Optional: restrict analysis to Atlas-listed opioids only */
+if $restrict_to_atlas {
+    quietly count if !_atlas_match
+    di "restrict_to_atlas=1: dropping `r(N)' opioids not listed in the Atlas"
+    drop if !_atlas_match
+}
 drop _merge
 
 /* Apply MoH strength unit where HC value is missing */
@@ -330,7 +341,13 @@ use temp, clear
    finds the single entry in mme.csv.
    ----------------------------------------------------------------------- */
 
-keep din_pin opioid_name factor route strength_unit strength hc_or_dip
+/* Carry oralmorphineequivalentfactormg forward; generate as missing if the
+   Atlas file did not include it (avoids an error in the keep below).       */
+capture confirm variable oralmorphineequivalentfactormg
+if _rc gen oralmorphineequivalentfactormg = .
+
+keep din_pin opioid_name factor route strength_unit strength hc_or_dip ///
+    _atlas_match oralmorphineequivalentfactormg
 duplicates drop
 
 gen mme_route = route
